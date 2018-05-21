@@ -1,0 +1,71 @@
+{
+  "name": "mainbryson",
+  "version": "2.0.0",
+  "description": "Customized Plugin for Zapport blogs only. Display the link alternative, give some user roles, can create a customize banner that have a shortcodes on it and this plugin have a sync for all the site that already input. This plugins is for private used only. Please DO NOT DEACTIVATE OR DELETE OR DO ANYTHING WITH THIS PLUGIN. PLEASE ASK BRY, JEM OR R.C BEFORE YOU DO ANYTHING WITH THIS PLUGIN. Thank You",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jemsay07/mainbryson.git"
+  },
+  "keywords": [
+    "banners",
+    "link",
+    "alternative",
+    "site",
+    "sync",
+    "user",
+    "roles",
+    "shortcodes"
+  ],
+  "author": "Bry, JEM, R.C",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jemsay07/mainbryson/issues"
+  },
+  "homepage": "https://github.com/jemsay07/mainbryson#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^8.0.0",
+    "browser-sync": "^2.24.4",
+    "browserify": "^16.2.2",
+    "browserify-shim": "^3.8.14",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-if": "^2.0.2",
+    "gulp-notify": "^3.2.0",
+    "gulp-options": "^1.1.1",
+    "gulp-plumber": "^1.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-strip-debug": "^3.0.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglifycss": "^1.0.9",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "code-prettify": "^0.1.0"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "jquery": "./node_modules/jquery/dist/jquery.js"
+  },
+  "browserify-shim": {
+    "jquery": "$"
+  }
+}
