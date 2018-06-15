@@ -1,0 +1,2 @@
+# mainbryson
+Customized Plugin for Zapport blogs only. Display the link alternative, give some user roles, can create a customize banner that have a shortcodes on it and this plugin have a sync for all the site that already input. This plugins is for private used only. Please DO NOT DEACTIVATE OR DELETE OR DO ANYTHING WITH THIS PLUGIN. PLEASE ASK BRY, JEM OR R.C BEFORE YOU DO ANYTHING WITH THIS PLUGIN. Thank You
