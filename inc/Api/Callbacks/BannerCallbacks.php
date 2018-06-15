@@ -1,6 +1,9 @@
 <?php
 /**
- * @package Main Bryson
+ * This is display the banner widget
+ * 
+ * @package Main_Bryson
+ * @author jem07.say@gmail.com
  */
 
 namespace Inc\Api\Callbacks;
