@@ -50,7 +50,7 @@ class BannerCallbacks extends WP_Widget
 				),
 				'post_type'				=> 'mb_banner',
 				'order'               	=> 'ASC',
-		   		'orderby'              	=> 'date'
+		   	'orderby'              	=> 'date'
 			) 
 		);
 
