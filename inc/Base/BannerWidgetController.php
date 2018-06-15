@@ -203,21 +203,37 @@ class BannerWidgetController extends BaseController
 	 *--------------------------------*/
 	public function registerAddMetaBox(){
 		
-		add_meta_box( 
-			'mb_meta_box_sections',
-			'Banner Details',
-			array($this, 'mbRenderBox'),
-			'mb_banner',
-			'normal',
-			'high'
-		); 
+		add_meta_box( 'mb_meta_type', 'Banner Type', array($this, 'mbRenderType'), 'mb_banner', 'normal', 'high' );
+		add_meta_box( 'mb_meta_box_sections','Banner Details',array($this, 'mbRenderBox'),'mb_banner','normal','high');
+		
 	}
+
+	/**
+	 * Render the Custom Meta Box For Add Type
+	 *-----------------------------------------*/
+
+	 public function mbRenderType( $post ){
+			 wp_nonce_field( 'mb_banner_sections', 'mb_banner_sections_nonce' );
+			 $data = get_post_meta( $post->ID, '_mb_banner_key' ,true );
+			$mb_type = isset( $data['mb_type'] ) ? 'mb_type_rich' : 'mb_type_url'; ?>
+
+			<div class="meta-container">
+				<input type="radio" name="mb_type" id="mb_banner_half" class="widefat mb_rl" data-type="mb_type_rich" value="mb_type_rich">
+				<label for="mb_banner_half">Rich Content</label>
+				<span class="meta-description">The full content editor from wordpress.</span>
+			</div>
+			<div class="meta-container">
+				<input type="radio" name="mb_type" id="mb_banner_full" class="widefat mb_rl" data-type="mb_type_url" value="mb_type_url">
+				<label for="mb_banner_full">URL</label>
+				<span class="meta-description">Banner that specify the path of url with shortcode.</span>
+			</div>
+			<?php 
+	 }
 
 	/**
 	 * Render the Custom Meta Box
 	 *--------------------------------*/
 	public function mbRenderBox($post){
-
 		wp_nonce_field( 'mb_banner_sections', 'mb_banner_sections_nonce' );
 
 		$data = get_post_meta( $post->ID, '_mb_banner_key' ,true );
@@ -236,10 +252,13 @@ class BannerWidgetController extends BaseController
 		    'drag_drop_upload' => true
 
 		);
-		wp_editor( $meta_biography, '_mb_banner_key', $args );
-
-
-		?>
+		wp_editor( $meta_biography, '_mb_banner_key', $args ); ?>
+		<div id="mb_type_rich">
+			Rich Content
+		</div>
+		<div id="mb_type_url">
+			URL
+		</div>
 		<p class="meta-container">
 			<label class="meta-label" for="mb_banner_title">Title:</label>
 			<input type="text" id="mb_banner_title" name="mb_banner_title" class="widefat" value="<?php echo esc_attr( $title ); ?>">
@@ -281,6 +300,7 @@ class BannerWidgetController extends BaseController
 		$data = array(
 			'title' => sanitize_text_field( $_POST['mb_banner_title'] ),
 			'alt_text' => sanitize_text_field( $_POST['mb_banner_alt_text'] ),
+			'mb_type' => isset( $_POST['mb_type'] ) ? 'mb_type_rich' : 'mb_type_url',
 			'new_tab' => isset( $_POST['mb_banner_new_tab'] ) ? 1 : 0,
 			'meta_biography' => isset( $_POST['meta_biography'] ) ? $_POST['meta_biography'] : '',
 		);

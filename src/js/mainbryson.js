@@ -19,8 +19,33 @@ window.addEventListener("load", function() {
 
 		clickedTab.classList.add("active");
 		document.querySelector(activePaneID).classList.add("active");
+		
+	}
+	
+});
+
+window.addEventListener('change', function(e){
+
+	/* var mb_type = document.querySelectorAll('#mb_meta_type input[name=mb_type]'); */
+	var children = e.target.parentNode.children;
+	
+	//console.log(mb_type);
+
+	for (var i = 0; i < children.length; i++) {
+
+		var id = children[i].getAttribute('data-type');
+		
+		var checked = children[i].checked;
+		console.log(checked);
+
+		if (id) {
+			var div = document.getElementById(id);
+			if (div) div.style.display = checked ? 'block' : 'none';
+		}
 
 	}
+
+	
 
 });
 

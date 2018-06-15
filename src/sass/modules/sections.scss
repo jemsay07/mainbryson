@@ -1,0 +1,21 @@
+span{
+  .meta-description,
+  &.meta-description{
+    display: block;
+    font-style: italic;
+    margin-bottom: 7px;
+  }
+}
+.meta-container{
+  label{
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 7px;
+  }
+}
+
+#mb_meta_type{
+  .meta-description{
+    margin-left: 24px;
+  }
+}
