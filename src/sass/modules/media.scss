@@ -1,0 +1,13 @@
+@media ( min-width: 768px ){
+  #mb_meta_type,
+  #mb_meta_box_sections{
+    float:left;
+  }
+  #mb_meta_type{
+    width: 24%;
+    margin-right: 24px;
+  }
+  #mb_meta_box_sections{
+    width: 74%;
+  }
+}

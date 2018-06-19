@@ -17,5 +17,6 @@ class MainBrysonEnqueue
 	public function __wp_enqueue(){
 		wp_enqueue_style( 'mainBrysonPluginStyle', MB_PLUGIN_URL . 'assets/css/mainbryson.css' );
 		wp_enqueue_script( 'mainBrysonPluginScript', MB_PLUGIN_URL . 'assets/js/mainbryson.js' );
+		wp_enqueue_media();
 	}
 }

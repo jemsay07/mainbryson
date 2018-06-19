@@ -215,16 +215,16 @@ class BannerWidgetController extends BaseController
 	 public function mbRenderType( $post ){
 			 wp_nonce_field( 'mb_banner_sections', 'mb_banner_sections_nonce' );
 			 $data = get_post_meta( $post->ID, '_mb_banner_key' ,true );
-			$mb_type = isset( $data['mb_type'] ) ? 'mb_type_rich' : 'mb_type_url'; ?>
+			 $mb_type = isset( $data['mb_type'] ) ? $data['mb_type'] : ''; ?>
 
 			<div class="meta-container">
-				<input type="radio" name="mb_type" id="mb_banner_half" class="widefat mb_rl" data-type="mb_type_rich" value="mb_type_rich">
-				<label for="mb_banner_half">Rich Content</label>
+				<input type="radio" name="mb_type" id="mb_type_rich" class="widefat mb_rl" value="mb_type_rich" <?php echo ( $mb_type === 'mb_type_rich' ) ? 'checked' : ''; ?> >
+				<label for="mb_type_rich">Rich Content</label>
 				<span class="meta-description">The full content editor from wordpress.</span>
 			</div>
 			<div class="meta-container">
-				<input type="radio" name="mb_type" id="mb_banner_full" class="widefat mb_rl" data-type="mb_type_url" value="mb_type_url">
-				<label for="mb_banner_full">URL</label>
+				<input type="radio" name="mb_type" id="mb_type_url" class="widefat mb_rl" value="mb_type_url" <?php echo ( $mb_type === 'mb_type_url' ) ? 'checked' : ''; ?>>
+				<label for="mb_type_url">Attachment</label>
 				<span class="meta-description">Banner that specify the path of url with shortcode.</span>
 			</div>
 			<?php 
@@ -238,10 +238,15 @@ class BannerWidgetController extends BaseController
 
 		$data = get_post_meta( $post->ID, '_mb_banner_key' ,true );
 
-		$title = isset( $data['title'] ) ? $data['title'] : '';
-		$alt_text = isset( $data['alt_text'] ) ? $data['alt_text'] : '';
-		$new_tab = isset( $data['new_tab'] ) ? $data['new_tab'] : false;
-		$meta_biography = isset( $data['meta_biography'] ) ? $data['meta_biography'] : '';
+		$title = isset( $data['title'] ) ? $data['title'] : ''; // title
+		$alt_text = isset( $data['alt_text'] ) ? $data['alt_text'] : ''; // alt text
+		$img = isset( $data['img'] ) ? $data['img'] : ''; // image path
+		$link = isset( $data['link'] ) ? $data['link'] : ''; // link url
+		$caption = isset( $data['caption'] ) ? $data['caption'] : ''; // image caption
+		$desc = isset( $data['desc'] ) ? $data['desc'] : ''; // image description
+		$new_tab = isset( $data['new_tab'] ) ? $data['new_tab'] : false; // new tab
+		$rel_xfn = isset( $data['rel_xfn'] ) ? $data['rel_xfn'] : false;
+		$meta_biography = isset( $data['meta_biography'] ) ? $data['meta_biography'] : ''; // rich content
 
 		$args = array(
 		    'wpautop'       => false,
@@ -251,31 +256,60 @@ class BannerWidgetController extends BaseController
 		    'teeny'         => true,
 		    'drag_drop_upload' => true
 
-		);
-		wp_editor( $meta_biography, '_mb_banner_key', $args ); ?>
-		<div id="mb_type_rich">
-			Rich Content
+		); ?>
+		<div id="mb_type_elem_rich">
+			<?php wp_editor( $meta_biography, '_mb_banner_key', $args ); ?>
 		</div>
-		<div id="mb_type_url">
-			URL
-		</div>
-		<p class="meta-container">
-			<label class="meta-label" for="mb_banner_title">Title:</label>
-			<input type="text" id="mb_banner_title" name="mb_banner_title" class="widefat" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<p class="meta-container">
-			<label class="meta-label" for="mb_banner_alt_text">Alternative Text:</label>
-			<input type="text" id="mb_banner_alt_text" name="mb_banner_alt_text" class="widefat" value="<?php echo esc_attr( $alt_text ); ?>">
-		</p>
-		<p class="meta-container">
-			<label class="meta-label w-50 text-left" for="mb_banner_new_tab">Open New Tab:</label>
-			<div class="text-right w-50 inline">
-				<div class="ui-toggle inline">
-					<input type="checkbox" id="mb_banner_new_tab" name="mb_banner_new_tab" value="1" <?php echo $new_tab ? 'checked':''; ?> >
-					<label for="mb_banner_new_tab"></label>
+		<div id="mb_type_elem_url">
+			<div class="meta-container">
+				<label class="meta-label" for="mb_banner_title">Title:</label>
+				<input type="text" id="mb_banner_title" name="mb_banner_title" value="<?php echo esc_attr( $title ); ?>">
+			</div>
+			<?php if( ! empty( $img ) ): ?>
+				<div class="meta-container">
+					<label class="meta-label" for="mb_banner_img">&nbsp;</label>
+					<img src="<?php echo $img; ?> ">
+				</div>
+			<?php endif; ?>
+			<div class="meta-container">
+				<label class="meta-label" for="mb_banner_img">Image:</label>
+				<input type="text" name="mb_banner_img" id="mb_banner_img" value="<?php echo esc_attr( $img ); ?>">
+			</div>
+			<div class="meta-container">
+				<label class="meta-label" for="mb_banner_link">Image URL:</label>
+				<input type="text" id="mb_banner_link" name="mb_banner_link" value="<?php echo esc_attr( $link ); ?>">
+			</div>
+			<div class="meta-container">
+				<label class="meta-label" for="mb_banner_alt_text">Alternative Text:</label>
+				<input type="text" id="mb_banner_alt_text" name="mb_banner_alt_text" value="<?php echo esc_attr( $alt_text ); ?>">
+			</div>
+			<div class="meta-container">
+				<label class="meta-label w-50 text-left" for="mb_banner_new_tab">Link Rel (XFN):</label>
+				<select name="mb_banner_rel_xfn" id="mb_banner_rel_xfn">
+					<option value="" <?php echo ( $rel_xfn == '' ) ? 'selected' : ''; ?>>Dofollow</option>
+					<option value="nofollow" <?php echo ( $rel_xfn == 'nofollow' ) ? 'selected' : ''; ?>>Nofollow</option>
+				</select>
+			</div>
+			<div class="meta-container">
+				<label class="meta-label w-50 text-left" for="mb_banner_new_tab">Open New Tab:</label>
+				<input type="checkbox" id="mb_banner_new_tab" name="mb_banner_new_tab" value="1" <?php echo $new_tab ? 'checked':''; ?> >
+			</div>
+			<div class="meta-container meta-collapse">
+				<div class="meta-collapse-header <?php echo ( ! empty( $caption ) || ! empty( $desc ) ) ? 'active' : ''; ?>">
+					<p>Sample</p>
+				</div>
+				<div id="meta-collapse-body">
+					<div class="meta-container">
+						<label class="meta-label" for="mb_banner_cap">Caption:</label>
+						<input type="text" id="mb_banner_cap" name="mb_banner_cap" value="<?php echo esc_attr( $caption ); ?>">
+					</div>
+					<div class="meta-container">
+						<label class="meta-label" for="mb_banner_cap">Description:</label>
+						<textarea name="mb_banner_desc" id="mb_banner_desc" cols="10" rows="10"><?php echo esc_html( $desc ); ?></textarea>
+					</div>
 				</div>
 			</div>
-		</p>
+		</div>
 	<?php }
 
 	/**
@@ -300,10 +334,17 @@ class BannerWidgetController extends BaseController
 		$data = array(
 			'title' => sanitize_text_field( $_POST['mb_banner_title'] ),
 			'alt_text' => sanitize_text_field( $_POST['mb_banner_alt_text'] ),
-			'mb_type' => isset( $_POST['mb_type'] ) ? 'mb_type_rich' : 'mb_type_url',
+			'img' =>  isset( $_POST['mb_banner_img'] ) ? strip_tags( $_POST['mb_banner_img'] )  : '',
+			'link' => isset( $_POST['mb_banner_link'] ) ? esc_url( $_POST['mb_banner_link'] )  : '',
+			'caption' => isset( $_POST['mb_banner_cap'] ) ? esc_attr( $_POST['mb_banner_cap'] )  : '',
+			'desc' => isset( $_POST['mb_banner_desc'] ) ? esc_html( $_POST['mb_banner_desc'] )  : '',
+			'mb_type' => sanitize_text_field( $_POST['mb_type'] ) ,
 			'new_tab' => isset( $_POST['mb_banner_new_tab'] ) ? 1 : 0,
-			'meta_biography' => isset( $_POST['meta_biography'] ) ? $_POST['meta_biography'] : '',
+			'rel_xfn' => isset( $_POST['mb_banner_rel_xfn'] ) ? 'nofollow' : '',
+			'meta_biography' => isset( $_POST['meta_biography'] ) ? esc_html( $_POST['meta_biography'] )  : '',
 		);
+		/* var_dump($data);
+		die; */
 		update_post_meta( $post_id, '_mb_banner_key', $data );
 	}
 
