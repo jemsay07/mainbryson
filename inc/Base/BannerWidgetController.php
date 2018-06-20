@@ -57,24 +57,24 @@ class BannerWidgetController extends BaseController
 		add_action( 'init', array( $this, 'registerCustomTaxonomy' ) );
 
 		//add extra field to category edit form hook
-		add_action( 'section_add_form_fields', array( $this, 'mbAddExtraFields') );
+		//add_action( 'section_add_form_fields', array( $this, 'mbAddExtraFields') );
 
 		//
-		add_action( 'created_section', array( $this, 'mbCreateFeatureMeta'), 10, 2 );
+		//add_action( 'created_section', array( $this, 'mbCreateFeatureMeta'), 10, 2 );
 
 		//edit extra field to category edit form hook
-		add_action( 'section_edit_form_fields', array( $this, 'mbEditExtraFields'), 10, 2 );
+		//add_action( 'section_edit_form_fields', array( $this, 'mbEditExtraFields'), 10, 2 );
 
 		//
-		add_action( 'edited_section', array( $this, 'update_feature_meta'), 10, 2 );
+		//add_action( 'edited_section', array( $this, 'update_feature_meta'), 10, 2 );
 
 		//
-		add_action( 'manage_edit-section', array( $this, 'add_feature_group_column') );
+	//	add_action( 'manage_edit-section', array( $this, 'add_feature_group_column') );
 
 		//
-		add_filter( 'manage_section_custom_column', array( $this, 'add_feature_group_column_content' ), 10, 3 );
+		//add_filter( 'manage_section_custom_column', array( $this, 'add_feature_group_column_content' ), 10, 3 );
 
-		add_filter( 'manage_edit-section', array( $this, 'add_feature_group_column_sortable' ) );
+		//add_filter( 'manage_edit-section', array( $this, 'add_feature_group_column_sortable' ) );
 
 	
 	}
@@ -412,7 +412,7 @@ class BannerWidgetController extends BaseController
 	 * edit form hook callback function
 	 *--------------------------------*/
 
-	public function mbAddExtraFields(){
+/* 	public function mbAddExtraFields(){
 		?>
 		    <div class="form-field term-group">
 		        <label for="featuret-group"><?php _e('Layout', 'main_bryson_plugin'); ?></label>
@@ -423,25 +423,25 @@ class BannerWidgetController extends BaseController
 		    </div>
 		<?php
 
-	}
+	} */
 
 	/**
 	 * Create
 	 *--------------------------------*/
 
-	public function mbCreateFeatureMeta( $term_id ){
+	/* public function mbCreateFeatureMeta( $term_id ){
 
 	    if( isset( $_POST['feature-group'] ) && '' !== $_POST['feature-group'] ){
 	        $group = $_POST['feature-group'];
 	        add_term_meta( $term_id, 'feature-group', $group, true );
 	    }
-	}
+	} */
 
 	/**
 	 * Edit
 	 *--------------------------------*/
 
-	public function mbEditExtraFields( $term, $taxonomy ){
+	/* public function mbEditExtraFields( $term, $taxonomy ){
 		//global $feature_groups;
 		//get current group
 		$feature_group = get_term_meta( $term->term_id, 'feature-group', true ); ?>
@@ -462,9 +462,9 @@ class BannerWidgetController extends BaseController
 		    </td>
 	    </tr>
 		<?php
-	}
+	} */
 
-	public function update_feature_meta( $term_id, $tt_id ){
+	/* public function update_feature_meta( $term_id, $tt_id ){
 
 	    if( isset( $_POST['feature-group'] ) && '' !== $_POST['feature-group'] ){
 	        $group =  $_POST['feature-group'] ;
@@ -495,7 +495,5 @@ class BannerWidgetController extends BaseController
 	public function add_feature_group_column_sortable( $sortable ){
 	    $sortable[ 'feature_group' ] = 'feature_group';
 	    return $sortable;
-	}
-	
-
+	} */
 }
