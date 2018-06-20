@@ -27,10 +27,18 @@ class BannerCallbacks extends WP_Widget
 	public function register(){
 		parent::__construct( $this->widget_ID,$this->widget_name,$this->widget_option,$this->control_options );
 		add_action( 'widgets_init', array( $this, 'widgetInit') );
+		add_action( 'wp_enqueue_scripts', array( $this,'__wp_widgit_enqueue'  ) );
 	}
 
 	public function widgetInit(){
 		register_widget( $this );
+	}
+	public function __wp_widgit_enqueue(){
+		wp_register_style( 'mainBrysonWidgetStyle', MB_PLUGIN_URL . 'assets/css/mainbryson_widget.css');
+		wp_enqueue_style( 'mainBrysonWidgetStyle' );
+
+		wp_register_script( 'mainBrysonWidgetScript', MB_PLUGIN_URL . 'assets/js/mainbryson_widget.js', array('jquery'), '1.0.0', true );
+		wp_enqueue_script('mainBrysonWidgetScript');
 	}
 
 	public function widget($args, $instance){

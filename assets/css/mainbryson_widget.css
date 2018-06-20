@@ -1,3 +1,2 @@
-.ads_col { background: red; }
-
+.bryson_ads .ads_col{float:left;margin-bottom:15px}.bryson_ads .ads_col.mb_attr_half{width:48%}.bryson_ads .ads_col.mb_attr_half.even{margin-right:4%}.bryson_ads .ads_col.mb_attr_half.odd{margin-right:0%}.bryson_ads .ads_col.mb_attr_full{width:100%;text-align:center}.bryson_ads .ads_col.mb_attr_full img{margin:auto}.bryson_ads .ads_col img{display:block;height:auto;max-width:100%;vertical-align:middle}
 /*# sourceMappingURL=mainbryson_widget.css.map */

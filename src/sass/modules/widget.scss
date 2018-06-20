@@ -1,3 +1,28 @@
-.ads_col{
-  background:red;
+.bryson_ads {
+  .ads_col{
+    float:left;
+    margin-bottom: 15px;
+    &.mb_attr_half{
+      width: 48%;
+      &.even{
+        margin-right: 4%;
+      }
+      &.odd{
+        margin-right: 0%;
+      }
+    }
+    &.mb_attr_full{
+      width: 100%;
+      text-align: center;
+      img{
+        margin: auto;
+      }
+    }
+    img{
+      display: block;
+      height: auto;
+      max-width: 100%;
+      vertical-align: middle;
+    }
+  }
 }
