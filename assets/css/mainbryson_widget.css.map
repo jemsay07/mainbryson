@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,QAAQ,GACN,UAAU,EAAC,GAAG",
+"sources": ["../../src/sass/modules/widget.scss"],
+"names": [],
+"file": "mainbryson_widget.css"
+}

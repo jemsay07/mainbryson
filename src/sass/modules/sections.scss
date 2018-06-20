@@ -1,4 +1,5 @@
 #mb_meta_type,
+#mb_meta_attr,
 #mb_meta_box_sections{
   display: block;
   width: 100%;
@@ -6,10 +7,30 @@
     font-weight: bold;
   }
 }
-#mb_meta_type{
+#mb_meta_type,
+#mb_meta_attr{
   .meta-description{
     margin-left: 24px;
     padding: 0px;
+  }
+}
+#mb_meta_attr{
+  .meta-attr-title{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-top: 0;
+  }
+  .meta-attr-label{
+    font-size: 13px;
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+  .meta-description{
+    font-size: 12px;
+  }
+  p{
+    margin: 0;
   }
 }
 span{
@@ -153,4 +174,7 @@ span{
       display: block;
     }
   }
+}
+.ads_col{
+  background: red;
 }

@@ -75,6 +75,7 @@ class BannerWidgetController extends BaseController
 		add_filter( 'manage_section_custom_column', array( $this, 'add_feature_group_column_content' ), 10, 3 );
 
 		add_filter( 'manage_edit-section', array( $this, 'add_feature_group_column_sortable' ) );
+
 	
 	}
 
@@ -203,34 +204,49 @@ class BannerWidgetController extends BaseController
 	 *--------------------------------*/
 	public function registerAddMetaBox(){
 		
-		add_meta_box( 'mb_meta_type', 'Banner Type', array($this, 'mbRenderType'), 'mb_banner', 'normal', 'high' );
+		add_meta_box( 'mb_meta_attr', 'Banner Attributes', array($this, 'mbRenderAttr'), 'mb_banner', 'normal', 'high');
 		add_meta_box( 'mb_meta_box_sections','Banner Details',array($this, 'mbRenderBox'),'mb_banner','normal','high');
-		
 	}
 
 	/**
-	 * Render the Custom Meta Box For Add Type
+	 * Render the Custom Meta Box For Add Attr
 	 *-----------------------------------------*/
 
-	 public function mbRenderType( $post ){
+	 public function mbRenderAttr( $post ){
 			 wp_nonce_field( 'mb_banner_sections', 'mb_banner_sections_nonce' );
 			 $data = get_post_meta( $post->ID, '_mb_banner_key' ,true );
-			 $mb_type = isset( $data['mb_type'] ) ? $data['mb_type'] : ''; ?>
-
+			 $mb_type = isset( $data['mb_type'] ) ? $data['mb_type'] : '';
+			 $mb_layout = isset( $data['mb_layout'] ) ? $data['mb_layout'] : ''; ?>
 			<div class="meta-container">
-				<input type="radio" name="mb_type" id="mb_type_rich" class="widefat mb_rl" value="mb_type_rich" <?php echo ( $mb_type === 'mb_type_rich' ) ? 'checked' : ''; ?> >
-				<label for="mb_type_rich">Rich Content</label>
-				<span class="meta-description">The full content editor from wordpress.</span>
+				<p class="meta-attr-title">Types</p>
+				<p>
+					<input type="radio" name="mb_type" id="mb_type_rich" class="widefat mb_rl" value="mb_type_rich" <?php echo ( $mb_type === 'mb_type_rich' ) ? 'checked' : ''; ?> >
+					<label for="mb_type_rich" class="meta-attr-label">Rich Content</label>
+					<span class="meta-description">The full content editor from wordpress.</span>
+				</p>
+				<p>
+					<input type="radio" name="mb_type" id="mb_type_url" class="widefat mb_rl" value="mb_type_url" <?php echo ( $mb_type === 'mb_type_url' ) ? 'checked' : ''; ?>>
+					<label for="mb_type_url" class="meta-attr-label">Attachment</label>
+					<span class="meta-description">Banner that specify the path of url with shortcode.</span>
+				</p>
 			</div>
 			<div class="meta-container">
-				<input type="radio" name="mb_type" id="mb_type_url" class="widefat mb_rl" value="mb_type_url" <?php echo ( $mb_type === 'mb_type_url' ) ? 'checked' : ''; ?>>
-				<label for="mb_type_url">Attachment</label>
-				<span class="meta-description">Banner that specify the path of url with shortcode.</span>
+				<p class="meta-attr-title">Layout</p>
+				<p>
+					<input type="radio" name="mb_layout" id="mb_attr_full" value="mb_attr_full" <?php echo ( $mb_layout === 'mb_attr_full' ) ? 'checked' : ''; ?> >
+					<label for="mb_attr_full" class="meta-attr-label">Full</label>
+					<span class="meta-description">Display a full width of the box.</span>
+				</p>
+				<p>
+					<input type="radio" name="mb_layout" id="mb_attr_half" value="mb_attr_half" <?php echo ( $mb_layout === 'mb_attr_half' ) ? 'checked' : ''; ?> >
+					<label for="mb_attr_half" class="meta-attr-label">Half</label>
+					<span class="meta-description">Display a half width of the box.</span>
+				</p>
 			</div>
 			<?php 
 	 }
 
-	/**
+	 /**
 	 * Render the Custom Meta Box
 	 *--------------------------------*/
 	public function mbRenderBox($post){
@@ -332,13 +348,14 @@ class BannerWidgetController extends BaseController
 		}
 
 		$data = array(
+			'mb_type' => sanitize_text_field( $_POST['mb_type'] ) ,
+			'mb_layout' => sanitize_text_field( $_POST['mb_layout'] ) ,
 			'title' => sanitize_text_field( $_POST['mb_banner_title'] ),
 			'alt_text' => sanitize_text_field( $_POST['mb_banner_alt_text'] ),
 			'img' =>  isset( $_POST['mb_banner_img'] ) ? strip_tags( $_POST['mb_banner_img'] )  : '',
 			'link' => isset( $_POST['mb_banner_link'] ) ? esc_url( $_POST['mb_banner_link'] )  : '',
 			'caption' => isset( $_POST['mb_banner_cap'] ) ? esc_attr( $_POST['mb_banner_cap'] )  : '',
 			'desc' => isset( $_POST['mb_banner_desc'] ) ? esc_html( $_POST['mb_banner_desc'] )  : '',
-			'mb_type' => sanitize_text_field( $_POST['mb_type'] ) ,
 			'new_tab' => isset( $_POST['mb_banner_new_tab'] ) ? 1 : 0,
 			'rel_xfn' => isset( $_POST['mb_banner_rel_xfn'] ) ? 'nofollow' : '',
 			'meta_biography' => isset( $_POST['meta_biography'] ) ? esc_html( $_POST['meta_biography'] )  : '',
