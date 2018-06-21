@@ -5,10 +5,8 @@
  */
 namespace Inc\Base;
 
-//use \Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
 use \Inc\Api\Callbacks\BannerCallbacks;
-//use \Inc\Api\Callbacks\AdminCallbacks;
 use \Inc\Api\Callbacks\AdminCallbacks;
 
 class BannerWidgetController extends BaseController
@@ -16,7 +14,6 @@ class BannerWidgetController extends BaseController
 	
 	public $settings;
 	public $callbacks;
-	//public $banner_callbacks;
 	public $subpages = array();
 	public $custom_post_types = array();
 	public $taxonomies = array();
@@ -26,26 +23,15 @@ class BannerWidgetController extends BaseController
 
 		if ( ! $this->activated('banner_manager') ) return;
 
-		//widget
-
-		//if ( ! $this->activated('banner_widget') ) return;
-
-		//$this->settings = new SettingsApi();
-
-		//$this->callbacks = new AdminCallbacks();
-
 		$banner_callbacks = new BannerCallbacks();
-		$banner_callbacks->register();
 
-		//$this->settings->addSubPages( $this->subpages )->register();
+		$banner_callbacks->register();
 
 		$this->storeCustomPostTypes();
 
 		$this->storeCustomTaxonomies();
 
 		$this->storeFeatureGroups();
-
-
 
 		//if ( ! empty( $this->custom_post_types ) ) {
 		add_action( 'init', array( $this, 'registerBanner' ) );
@@ -56,83 +42,7 @@ class BannerWidgetController extends BaseController
 		//register taxonomy
 		add_action( 'init', array( $this, 'registerCustomTaxonomy' ) );
 
-		//add extra field to category edit form hook
-		//add_action( 'section_add_form_fields', array( $this, 'mbAddExtraFields') );
-
-		//
-		//add_action( 'created_section', array( $this, 'mbCreateFeatureMeta'), 10, 2 );
-
-		//edit extra field to category edit form hook
-		//add_action( 'section_edit_form_fields', array( $this, 'mbEditExtraFields'), 10, 2 );
-
-		//
-		//add_action( 'edited_section', array( $this, 'update_feature_meta'), 10, 2 );
-
-		//
-	//	add_action( 'manage_edit-section', array( $this, 'add_feature_group_column') );
-
-		//
-		//add_filter( 'manage_section_custom_column', array( $this, 'add_feature_group_column_content' ), 10, 3 );
-
-		//add_filter( 'manage_edit-section', array( $this, 'add_feature_group_column_sortable' ) );
-
-	
 	}
-
-/*	public function setSubPages(){
-		$this->subpages = array(
-			array(
-				'parent_slug' => 'main_bryson_plugin',
-				'page_title' => 'Custom Banner',
-				'menu_title' => 'Banner Manager',
-				'capability' => 'manage_options',
-				'menu_slug' => 'mb_banner',
-				'callback' =>  array( $this->callbacks, 'adminBanner' ),
-			)
-		);
-	} kruger
-
-	public function setSettings(){
-		$args = array(
-			array(
-				'option_group' => 'mb_banner_settings',
-				'option_name'  => 'mb_banner',
-				'callback'	   => array( $this->banner_callbacks, 'bannerSanitize' ),
-			)
-		);
-		$this->settings->setSettings($args);
-	}
-
-	public function setSections()
-	{
-		$args = array(
-			array(
-				'id' => 'mb_banner_index',
-				'title'  => 'Banner Manager',
-				'callback'	   => array( $this->banner_callbacks, 'bannerSectionManager' ),
-				'page'	=> 'mb_banner'
-			)
-		);
-
-		$this->settings->setSections( $args );
-	}
-
-	public function setFields(){
-		$args = array(
-			array( 
-				'id' => 'post_type',
-				'title'  => 'Custom Post Type ID',
-				'callback'	   => array( $this->banner_callbacks, 'textField' ),
-				'page'	=> 'mb_banner',
-				'section'	=> 'mb_banner_index',
-				'args'	=> array(
-					'option_name' 	=> 'mb_banner',
-					'label_for' 	=> 'post_type',
-					'placeholder'	=> 'eg. Product',
-				)
-			),
-		);
-	}*/
 
 	public function storeCustomPostTypes(){
 		$this->custom_post_types[] = array(
@@ -288,11 +198,11 @@ class BannerWidgetController extends BaseController
 				</div>
 			<?php endif; ?>
 			<div class="meta-container">
-				<label class="meta-label" for="mb_banner_img">Image:</label>
+				<label class="meta-label" for="mb_banner_img">Image URL:</label>
 				<input type="text" name="mb_banner_img" id="mb_banner_img" value="<?php echo esc_attr( $img ); ?>">
 			</div>
 			<div class="meta-container">
-				<label class="meta-label" for="mb_banner_link">Image URL:</label>
+				<label class="meta-label" for="mb_banner_link">Link To:</label>
 				<input type="text" id="mb_banner_link" name="mb_banner_link" value="<?php echo esc_attr( $link ); ?>">
 			</div>
 			<div class="meta-container">
@@ -358,7 +268,7 @@ class BannerWidgetController extends BaseController
 			'desc' => isset( $_POST['mb_banner_desc'] ) ? esc_html( $_POST['mb_banner_desc'] )  : '',
 			'new_tab' => isset( $_POST['mb_banner_new_tab'] ) ? 1 : 0,
 			'rel_xfn' => isset( $_POST['mb_banner_rel_xfn'] ) ? 'nofollow' : '',
-			'meta_biography' => isset( $_POST['meta_biography'] ) ? esc_html( $_POST['meta_biography'] )  : '',
+			'meta_biography' => isset( $_POST['meta_biography'] ) ?  $_POST['meta_biography']   : '',
 		);
 		/* var_dump($data);
 		die; */
@@ -406,94 +316,4 @@ class BannerWidgetController extends BaseController
 		 	'half' => __( 'Half Layout', 'main_bryson_plugin' ),
 		 );
 	}
-
-	/**
-	 * Add extra field to category
-	 * edit form hook callback function
-	 *--------------------------------*/
-
-/* 	public function mbAddExtraFields(){
-		?>
-		    <div class="form-field term-group">
-		        <label for="featuret-group"><?php _e('Layout', 'main_bryson_plugin'); ?></label>
-		        <?php foreach ($this->feature_groups as $_group_key => $_group) : ?>
-		        	<label for="mb_item_<?php echo $_group_key; ?>">
-		        		<input type="radio" name="feature-group" id="mb_item_<?php echo $_group_key; ?>" value="<?php echo $_group_key; ?>"><?php echo $_group; ?></label>
-		        <?php endforeach; ?>
-		    </div>
-		<?php
-
-	} */
-
-	/**
-	 * Create
-	 *--------------------------------*/
-
-	/* public function mbCreateFeatureMeta( $term_id ){
-
-	    if( isset( $_POST['feature-group'] ) && '' !== $_POST['feature-group'] ){
-	        $group = $_POST['feature-group'];
-	        add_term_meta( $term_id, 'feature-group', $group, true );
-	    }
-	} */
-
-	/**
-	 * Edit
-	 *--------------------------------*/
-
-	/* public function mbEditExtraFields( $term, $taxonomy ){
-		//global $feature_groups;
-		//get current group
-		$feature_group = get_term_meta( $term->term_id, 'feature-group', true ); ?>
-		<tr class="form-field term-group-wrap">
-	        <th scope="row"><label for="feature-group"><?php _e( 'Feature Group', 'main_bryson_plugin' ); ?></label></th>
-	        <td><?php foreach ($this->feature_groups as $_group_key => $_group) :
-	        			$checked = ( $_group_key == $feature_group ) ? 'checked' : ''; ?>
-		        	<label for="mb_item_<?php echo $_group_key; ?>">
-		        		<input type="radio" name="feature-group" id="mb_item_<?php echo $_group_key; ?>" value="<?php echo $_group_key; ?>" <?php echo $checked; ?>><?php echo $_group; ?>
-		        	</label>
-		        <?php endforeach; ?>
-
-		     <!--  <select class="postform" id="equipment-group" name="feature-group">
-		         <option value="-1"><?php _e('none', 'main_bryson_plugin'); ?></option><?php foreach ($this->feature_groups as $_group_key => $_group) : ?>
-		             <option value="<?php echo $_group_key; ?>" class=""><?php echo $_group; ?></option>
-		         <?php endforeach; ?>
-		     </select> -->
-		    </td>
-	    </tr>
-		<?php
-	} */
-
-	/* public function update_feature_meta( $term_id, $tt_id ){
-
-	    if( isset( $_POST['feature-group'] ) && '' !== $_POST['feature-group'] ){
-	        $group =  $_POST['feature-group'] ;
-	        update_term_meta( $term_id, 'feature-group', $group );
-	    }
-	}
-
-	public function add_feature_group_column( $columns ){
-	    $columns['feature_group'] = __( 'Group', 'main_bryson_plugin' );
-	    return $columns;
-	}
-
-	public function add_feature_group_column_content( $content, $column_name, $term_id ){
-	    //global $feature_groups;
-
-	    if( $column_name !== 'feature_group' ){
-	        return $content;
-	    }
-
-	    $term_id = absint( $term_id );
-	    $feature_group = get_term_meta( $term_id, 'feature-group', true );
-
-	    if( !empty( $feature_group ) ){
-	        $content .= esc_attr( $feature_groups[ $feature_group ] );
-	    }
-	}
-
-	public function add_feature_group_column_sortable( $sortable ){
-	    $sortable[ 'feature_group' ] = 'feature_group';
-	    return $sortable;
-	} */
 }

@@ -58,40 +58,55 @@ class BannerCallbacks extends WP_Widget
 						$custom_fields = get_post_custom( get_the_ID() );;
 						$my_custom_field = $custom_fields['_mb_banner_key'];
 						foreach ( $my_custom_field as $key => $value ) {
-							$sample = unserialize($value);
-							$mb_type = $sample['mb_type'];
-							$mb_layout = $sample['mb_layout'];
-							$title = $sample['title'];
-							$alt_text = $sample['alt_text'];
-							$img = $sample['img'];
-							$link = $sample['link'];
-							$caption = $sample['caption'];
-							$desc = $sample['desc'];
-							$new_tab = $sample['new_tab'];
-							$rel_xfn = $sample['rel_xfn'];
-							$meta_biography = $sample['meta_biography'];
+							$mb_ads = unserialize($value);
+							$mb_type = $mb_ads['mb_type'];
+							$mb_layout = $mb_ads['mb_layout'];
+							$title = $mb_ads['title'];
+							$alt_text = $mb_ads['alt_text'];
+							$img = $mb_ads['img'];
+							$link = $mb_ads['link'];
+							$caption = $mb_ads['caption'];
+							$desc = $mb_ads['desc'];
+							$new_tab = $mb_ads['new_tab'];
+							$rel_xfn = $mb_ads['rel_xfn'];
+							$meta_biography = $mb_ads['meta_biography'];
+
+							$alt_text = ( ! empty( esc_attr($alt_text) ) ) ? $alt_text : '';
+							$mb_layout = ($mb_layout === 'mb_attr_half') ? 'attr_half' : 'attr_full';
 							
 							if($mb_type === 'mb_type_url') :
-								$mb_layout = ($mb_layout === 'mb_attr_half') ? 'attr_half' : 'attr_full';
-								if ( ! empty($link) ):
+								if ( ! empty( $link ) && ! empty( $caption ) ):
+									$caption_before = '<figure class="wp-caption">';
+									$caption_after = '</figure>';
 									$before_img = '<a href="' . esc_url( do_shortcode( $link ) ) . '" rel="'. $rel_xfn .'" target="' . $new_tab . '">';
 									$after_img = '</a>';
-								else:
+								elseif( empty( $link ) && ! empty( $caption ) ):
+									$caption_before = '<figure class="wp-caption">';
+									$caption_after = '</figure>';
 									$before_img = '';
 									$after_img = '';
-								endif;
-								?>
+								elseif( ! empty( $link ) &&  empty( $caption ) ):
+									$caption_before = '';
+									$caption_after = '';
+									$before_img = '<a href="' . esc_url( do_shortcode( $link ) ) . '" rel="'. $rel_xfn .'" target="' . $new_tab . '">';
+									$after_img = '</a>';									
+								else:
+									$caption_before = '';
+									$caption_after = '';
+									$before_img = '';
+									$after_img = '';
+								endif; ?>
+									<div class="ads_col mb_banner mb_<?php echo $mb_layout; ?>">
+										<?php echo $caption_before . $before_img; ?><img src="<?php echo esc_attr( $img ); ?>" alt="<?php echo $alt_text; ?>"><?php echo $after_img; ?><figcaption class="wp-caption-text"><?php echo esc_attr( $caption ); ?></figcaption><?php $caption_after; ?>
+									</div>
+							<?php else: ?>
 								<div class="ads_col mb_banner mb_<?php echo $mb_layout; ?>">
-									<?php echo $before_img; ?>
-										<img src="<?php echo esc_attr( $img ); ?>" alt="">
-									<?php echo $after_img; ?>
+									<?php echo _e( $meta_biography, 'main_bryson_plugin' ); ?> 
 								</div>
-								<?php else:
-								echo esc_html__( $meta_biography, 'main_bryson_plugin' );
-							endif;
+							<?php endif; // end of mb_type
 
-						}
-						endwhile; ?>
+						} //end of foreach
+						endwhile; wp_reset_query(); ?>
 			</div>
 		<?php endif;
 		echo $args['after_widget'];
